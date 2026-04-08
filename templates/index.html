@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DeClaim</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <h1>DeClaim – Breaking Claims into Logic</h1>
+    <p><i>Understand before you believe</i></p>
+
+    <form method="POST" action="/analyze">
+        <textarea name="claim" placeholder="Enter your claim here..."></textarea><br>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if result %}
+        <div class="result-box 
+            {% if result.risk == 'High' %}high
+            {% elif result.risk == 'Medium' %}medium
+            {% else %}low
+            {% endif %}">
+            
+            <h2>Risk Level: {{ result.risk }}</h2>
+            <p><strong>Reason:</strong> {{ result.reason }}</p>
+            <p><strong>Better Version:</strong> {{ result.rewrite }}</p>
+        </div>
+    {% endif %}
+
+</body>
+</html>
