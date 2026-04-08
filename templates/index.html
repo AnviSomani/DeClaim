@@ -1,32 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>DeClaim</title>
-   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeClaim - AI Fact Checker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="icon">✨</span>
+                <h2>DeClaim</h2>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="active"><span class="icon">🔍</span> Analyze</a>
+                <a href="#"><span class="icon">📜</span> History</a>
+                <a href="#"><span class="icon">🗂️</span> Sources</a>
+                <a href="#"><span class="icon">⚙️</span> Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff" alt="User" class="avatar">
+                    <span>Premium User</span>
+                </div>
+            </div>
+        </aside>
 
-    <h1>DeClaim – Breaking Claims into Logic</h1>
-    <p><i>Understand before you believe</i></p>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Navbar -->
+            <header class="navbar">
+                <div class="search-bar">
+                    <span class="icon">⌕</span>
+                    <input type="text" placeholder="Search past claims...">
+                </div>
+                <div class="nav-actions">
+                    <button class="btn-icon">🔔</button>
+                    <button class="btn-primary">New Analysis</button>
+                </div>
+            </header>
 
-    <form method="POST" action="/analyze">
-        <textarea name="claim" placeholder="Enter your claim here..."></textarea><br>
-        <button type="submit">Analyze</button>
-    </form>
+            <!-- Content Area -->
+            <div class="content-wrapper">
+                <div class="hero-section">
+                    <h1>Breaking Claims into <span class="gradient-text">Logic</span></h1>
+                    <p>Powered by Advanced AI. Understand before you believe.</p>
+                </div>
 
-    {% if result %}
-        <div class="result-box 
-            {% if result.risk == 'High' %}high
-            {% elif result.risk == 'Medium' %}medium
-            {% else %}low
-            {% endif %}">
-            
-            <h2>Risk Level: {{ result.risk }}</h2>
-            <p><strong>Reason:</strong> {{ result.reason }}</p>
-            <p><strong>Better Version:</strong> {{ result.rewrite }}</p>
+                <div class="analysis-card glass">
+                    <div class="input-section">
+                        <textarea id="claimInput" placeholder="Paste a headline, tweet, or news snippet here..." rows="4"></textarea>
+                        <div class="btn-group">
+                            <button id="analyzeBtn" class="btn-analyze">Detect Fake News <span class="arrow">→</span></button>
+                            <button id="detailedAnalysisBtn" class="btn-premium">Detailed Analysis <span class="icon">💎</span></button>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="loadingState" class="hidden">
+                        <div class="spinner"></div>
+                        <p>AI is analyzing the context...</p>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="resultBox" class="result-box hidden">
+                        <div class="risk-badge" id="riskBadge">High Risk</div>
+                        
+                        <div class="result-details">
+                            <div class="detail-group">
+                                <h3>Reasoning</h3>
+                                <p id="reasonText"></p>
+                            </div>
+                            <div class="detail-group">
+                                <h3>Factual Rewrite</h3>
+                                <p id="rewriteText"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error Section -->
+                    <div id="errorBox" class="error-box hidden">
+                        <p id="errorText"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Background Orbs -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <!-- Premium Modal -->
+    <div id="premiumModal" class="modal hidden">
+        <div class="modal-content glass">
+            <span id="closeModal" class="close-btn">&times;</span>
+            <h2>Unlock Detailed Analysis</h2>
+            <p>Upgrade to <span class="gradient-text">Premium</span> to unlock deep fact-checking over 10+ sources, logic flaw detection, and bias graphing.</p>
+            <div class="price-tag">$5 <span>/ month</span></div>
+            <button class="btn-primary upgrade-btn">Upgrade Now</button>
         </div>
-    {% endif %}
-
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
