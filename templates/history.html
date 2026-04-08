@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeClaim - History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .history-card {
+            padding: 1.5rem;
+            animation: slideUp 0.4s ease-out;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .history-card:hover {
+            transform: translateY(-2px);
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .timestamp {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .history-claim {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+        .history-reason {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="icon">✨</span>
+                <h2>DeClaim</h2>
+            </div>
+            <nav class="nav-links">
+                <a href="/"><span class="icon">🔍</span> Analyze</a>
+                <a href="/history" class="active"><span class="icon">📜</span> History</a>
+                <a href="#"><span class="icon">🗂️</span> Sources</a>
+                <a href="#"><span class="icon">⚙️</span> Settings</a>
+                <a href="/logout"><span class="icon">🚪</span> Logout</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff" alt="User" class="avatar">
+                    <span>Premium User</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Navbar -->
+            <header class="navbar">
+                <div class="search-bar">
+                    <span class="icon">⌕</span>
+                    <input type="text" placeholder="Search past claims...">
+                </div>
+                <div class="nav-actions">
+                    <button class="btn-icon">🔔</button>
+                    <a href="/"><button class="btn-primary">New Analysis</button></a>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-wrapper">
+                <div class="hero-section" style="margin-bottom: 1rem; text-align: left;">
+                    <h1>Your <span class="gradient-text">History</span></h1>
+                    <p>Review past claims and analyses made by DeClaim AI.</p>
+                </div>
+
+                {% if history %}
+                    <div class="history-list">
+                        {% for item in history %}
+                        <div class="glass history-card">
+                            <div class="history-header">
+                                <span class="risk-badge risk-{{ item.risk|lower }}" style="margin-bottom: 0; padding: 0.3rem 0.8rem; font-size: 0.85rem;">{{ item.risk }} Risk</span>
+                                <span class="timestamp">{{ item.timestamp }}</span>
+                            </div>
+                            <div class="history-claim">"{{ item.claim }}"</div>
+                            <div class="history-reason"><strong>Reason:</strong> {{ item.reason }}</div>
+                            <div style="color: #93c5fd;"><strong>Rewrite:</strong> {{ item.rewrite }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="glass empty-state">
+                        <p>You haven't analyzed any claims yet. Go to Analyze to get started!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Background Orbs -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+</body>
+</html>
