@@ -1,0 +1,19 @@
+# Environments
+.env
+
+# Environments (Python)
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# SQLite databases (Ignore local DB to prevent overriding production data or tracking local files)
+*.sqlite3
+*.db
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class

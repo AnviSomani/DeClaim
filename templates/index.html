@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeClaim - AI Fact Checker</title>
+    <title>DeClaim - Breaking Claims into Logic</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -12,21 +12,35 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <span class="icon">✨</span>
+                <span class="icon">📰</span>
                 <h2>DeClaim</h2>
             </div>
             <nav class="nav-links">
                 <a href="/" class="active"><span class="icon">🔍</span> Analyze</a>
                 <a href="/history"><span class="icon">📜</span> History</a>
-                <a href="#"><span class="icon">🗂️</span> Sources</a>
-                <a href="#"><span class="icon">⚙️</span> Settings</a>
+                <a href="/sources"><span class="icon">🗂️</span> Sources</a>
+                <a href="/premium"><span class="icon">💎</span> Premium</a>
+                <a href="/settings"><span class="icon">⚙️</span> Settings</a>
                 <a href="/logout"><span class="icon">🚪</span> Logout</a>
             </nav>
             <div class="sidebar-footer">
-                <div class="user-profile">
-                    <img src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff" alt="User" class="avatar">
-                    <span>Premium User</span>
+                <a href="/profile" style="text-decoration: none; color: inherit; display: block; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">
+                <div class="user-profile" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <img src="https://ui-avatars.com/api/?name={{ user }}&background=0D8ABC&color=fff" alt="User" class="avatar">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 1rem;">{{ user }}</span>
+                            <span id="userBadge" style="font-size: 0.75rem; color: #f59e0b; font-weight: 800; text-transform: uppercase;">{{ user_badge }}</span>
+                        </div>
+                    </div>
+                    <div style="width: 100%; background: rgba(148, 163, 184, 0.2); border-radius: 4px; height: 6px; overflow: hidden; margin-bottom: 4px;">
+                        <div id="scoreProgress" style="width: {{ (skeptic_score % 100)|int }}%; background: var(--accent-primary); height: 100%; transition: width 0.5s ease;"></div>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); width: 100%; text-align: right;">
+                        Score: <strong id="userScore" style="color: var(--text-primary);">{{ skeptic_score }}</strong> XP
+                    </div>
                 </div>
+                </a>
             </div>
         </aside>
 
@@ -47,23 +61,23 @@
             <!-- Content Area -->
             <div class="content-wrapper">
                 <div class="hero-section">
-                    <h1>Breaking Claims into <span class="gradient-text">Logic</span></h1>
-                    <p>Powered by Advanced AI. Understand before you believe.</p>
+                    <h1>Fact-Checking & <span class="gradient-text">Veracity Analysis</span></h1>
+                    <p>Cross-referencing claims against established journalistic databases and historical records.</p>
                 </div>
 
                 <div class="analysis-card glass">
                     <div class="input-section">
                         <textarea id="claimInput" placeholder="Paste a headline, tweet, or news snippet here..." rows="4"></textarea>
                         <div class="btn-group">
-                            <button id="analyzeBtn" class="btn-analyze">Detect Fake News <span class="arrow">→</span></button>
-                            <button id="detailedAnalysisBtn" class="btn-premium">Detailed Analysis <span class="icon">💎</span></button>
+                            <button id="analyzeBtn" class="btn-analyze">Verify Claim <span class="arrow">→</span></button>
+                            <button id="detailedAnalysisBtn" class="btn-premium">View Full Report <span class="icon">📄</span></button>
                         </div>
                     </div>
 
                     <!-- Loading State -->
                     <div id="loadingState" class="hidden">
                         <div class="spinner"></div>
-                        <p>AI is analyzing the context...</p>
+                        <p>Analyzing context and verifying sources...</p>
                     </div>
 
                     <!-- Results Section -->
@@ -79,6 +93,16 @@
                                 <h3>Factual Rewrite</h3>
                                 <p id="rewriteText"></p>
                             </div>
+                            <div class="detail-group hidden" id="radarContainer" style="display: flex; flex-direction: column; align-items: center; margin-top: 2rem;">
+                                <h3 style="align-self: flex-start;">Deception & Manipulation Radar</h3>
+                                <div style="width: 100%; max-width: 350px;">
+                                    <canvas id="radarChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: center; margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 2rem;">
+                                <button id="exportCardBtn" class="btn-premium"><span class="icon">📸</span> Save Truth Card for Social Media</button>
+                            </div>
                         </div>
                     </div>
 
@@ -91,9 +115,7 @@
         </main>
     </div>
 
-    <!-- Background Orbs -->
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
+    <!-- Background removed for cleaner aesthetic -->
 
     <!-- Premium Modal -->
     <div id="premiumModal" class="modal hidden">
@@ -101,10 +123,32 @@
             <span id="closeModal" class="close-btn">&times;</span>
             <h2>Unlock Detailed Analysis</h2>
             <p>Upgrade to <span class="gradient-text">Premium</span> to unlock deep fact-checking over 10+ sources, logic flaw detection, and bias graphing.</p>
-            <div class="price-tag">$5 <span>/ month</span></div>
-            <button class="btn-primary upgrade-btn">Upgrade Now</button>
+            <a href="/premium" class="btn-primary upgrade-btn" style="text-decoration: none; display: inline-block; text-align: center;">View Premium offers</a>
         </div>
     </div>
+    
+    <!-- Hidden Truth Card for Export -->
+    <div id="exportWrapper" style="position: absolute; left: -9999px; top: -9999px;">
+        <div id="truthCard" style="width: 600px; padding: 40px; background: #0f172a; color: #fff; font-family: 'Inter', sans-serif; border-radius: 20px; border: 2px solid #b91c1c; position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; font-size: 28px; background: #b91c1c; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">📰 DeClaim Fact Check</h2>
+                <div id="tcRisk" style="padding: 10px 20px; border-radius: 20px; font-weight: 800; font-size: 18px; border: 2px solid #b91c1c; color: #f87171;">100% FAKE</div>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                <div style="color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 800;">Original Claim</div>
+                <div id="tcClaim" style="font-size: 20px; font-style: italic; line-height: 1.5;"></div>
+            </div>
+            <div style="padding: 20px; border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.05); border-radius: 0 12px 12px 0;">
+                <div style="color: #10b981; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 800;">The Objective Truth</div>
+                <div id="tcTruth" style="font-size: 18px; line-height: 1.6;"></div>
+            </div>
+            <div style="margin-top: 30px; text-align: center; color: #64748b; font-size: 14px; font-weight: 600;">
+                Verified by DeClaim AI Engine • declaim.network
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

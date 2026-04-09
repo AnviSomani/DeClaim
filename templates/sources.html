@@ -3,52 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeClaim - History</title>
+    <title>Trusted Sources - DeClaim</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+        .source-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
             margin-top: 2rem;
         }
-        .history-card {
-            padding: 1.5rem;
-            animation: slideUp 0.4s ease-out;
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-        .history-card:hover {
-            transform: translateY(-2px);
-        }
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--glass-border);
-        }
-        .timestamp {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-        .history-claim {
-            font-size: 1.1rem;
-            font-style: italic;
-            margin-bottom: 1rem;
-            color: #d1d5db;
-        }
-        .history-reason {
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-        .empty-state {
+        .source-card {
+            padding: 2rem;
             text-align: center;
-            padding: 3rem;
+            transition: all 0.3s ease;
+        }
+        .source-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(109, 40, 217, 0.4);
+        }
+        .source-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .source-card h3 {
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+        .source-card p {
             color: var(--text-secondary);
-            font-size: 1.2rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -57,13 +42,13 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <span class="icon">✨</span>
+                <span class="icon">📰</span>
                 <h2>DeClaim</h2>
             </div>
             <nav class="nav-links">
                 <a href="/"><span class="icon">🔍</span> Analyze</a>
-                <a href="/history" class="active"><span class="icon">📜</span> History</a>
-                <a href="/sources"><span class="icon">🗂️</span> Sources</a>
+                <a href="/history"><span class="icon">📜</span> History</a>
+                <a href="/sources" class="active"><span class="icon">🗂️</span> Sources</a>
                 <a href="/premium"><span class="icon">💎</span> Premium</a>
                 <a href="/settings"><span class="icon">⚙️</span> Settings</a>
                 <a href="/logout"><span class="icon">🚪</span> Logout</a>
@@ -99,42 +84,51 @@
                 </div>
                 <div class="nav-actions">
                     <button class="btn-icon">🔔</button>
-                    <a href="/"><button class="btn-primary">New Analysis</button></a>
+                    <a href="/" class="btn-primary" style="text-decoration: none;">New Analysis</a>
                 </div>
             </header>
 
             <!-- Content Area -->
             <div class="content-wrapper">
-                <div class="hero-section" style="margin-bottom: 1rem; text-align: left;">
-                    <h1>Your <span class="gradient-text">History</span></h1>
-                    <p>Review past claims and analyses made by DeClaim AI.</p>
+                <div class="hero-section" style="text-align: left;">
+                    <h1>Our Trusted <span class="gradient-text">Sources</span></h1>
+                    <p>DeClaim cross-references claims against global journalistic databases, historical records, and leading fact-checking outlets to guarantee peak veracity.</p>
                 </div>
 
-                {% if history %}
-                    <div class="history-list">
-                        {% for item in history %}
-                        <div class="glass history-card">
-                            <div class="history-header">
-                                <span class="risk-badge risk-{{ item.risk|lower }}" style="margin-bottom: 0; padding: 0.3rem 0.8rem; font-size: 0.85rem;">{{ item.risk }} Risk</span>
-                                <span class="timestamp">{{ item.timestamp }}</span>
-                            </div>
-                            <div class="history-claim">"{{ item.claim }}"</div>
-                            <div class="history-reason"><strong>Reason:</strong> {{ item.reason }}</div>
-                            <div style="color: #93c5fd;"><strong>Rewrite:</strong> {{ item.rewrite }}</div>
-                        </div>
-                        {% endfor %}
+                <div class="source-grid">
+                    <div class="source-card glass">
+                        <div class="source-icon">🏛️</div>
+                        <h3>Associated Press</h3>
+                        <p>Independent global news organization providing fact-based reporting since 1846.</p>
                     </div>
-                {% else %}
-                    <div class="glass empty-state">
-                        <p>You haven't analyzed any claims yet. Go to Analyze to get started!</p>
+                    <div class="source-card glass">
+                        <div class="source-icon">🌐</div>
+                        <h3>Reuters</h3>
+                        <p>International news agency keeping you informed with unbiased, breaking global developments.</p>
                     </div>
-                {% endif %}
+                    <div class="source-card glass">
+                        <div class="source-icon">🔎</div>
+                        <h3>Snopes</h3>
+                        <p>The internet's definitive fact-checking resource, investigating rumors and misinformation.</p>
+                    </div>
+                    <div class="source-card glass">
+                        <div class="source-icon">✅</div>
+                        <h3>PolitiFact</h3>
+                        <p>Pulitzer Prize-winning operation ranking political claims on their Truth-O-Meter.</p>
+                    </div>
+                    <div class="source-card glass">
+                        <div class="source-icon">🧬</div>
+                        <h3>ScienceDirect</h3>
+                        <p>Leading platform of peer-reviewed scholarly literature for scientific claims.</p>
+                    </div>
+                    <div class="source-card glass">
+                        <div class="source-icon">📊</div>
+                        <h3>Statista</h3>
+                        <p>Global data and business intelligence platform ensuring numerical data accuracy.</p>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
-
-    <!-- Background Orbs -->
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
 </body>
 </html>

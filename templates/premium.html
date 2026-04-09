@@ -3,68 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeClaim - History</title>
+    <title>Premium Plans - DeClaim</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        .history-card {
-            padding: 1.5rem;
-            animation: slideUp 0.4s ease-out;
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-        .history-card:hover {
-            transform: translateY(-2px);
-        }
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--glass-border);
-        }
-        .timestamp {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-        .history-claim {
-            font-size: 1.1rem;
-            font-style: italic;
-            margin-bottom: 1rem;
-            color: #d1d5db;
-        }
-        .history-reason {
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-        }
-    </style>
 </head>
 <body>
     <div class="layout">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <span class="icon">✨</span>
+                <span class="icon">📰</span>
                 <h2>DeClaim</h2>
             </div>
             <nav class="nav-links">
                 <a href="/"><span class="icon">🔍</span> Analyze</a>
-                <a href="/history" class="active"><span class="icon">📜</span> History</a>
+                <a href="/history"><span class="icon">📜</span> History</a>
                 <a href="/sources"><span class="icon">🗂️</span> Sources</a>
-                <a href="/premium"><span class="icon">💎</span> Premium</a>
+                <a href="/premium" class="active"><span class="icon">💎</span> Premium</a>
                 <a href="/settings"><span class="icon">⚙️</span> Settings</a>
                 <a href="/logout"><span class="icon">🚪</span> Logout</a>
             </nav>
@@ -99,42 +54,58 @@
                 </div>
                 <div class="nav-actions">
                     <button class="btn-icon">🔔</button>
-                    <a href="/"><button class="btn-primary">New Analysis</button></a>
+                    <a href="/" class="btn-primary" style="text-decoration: none;">New Analysis</a>
                 </div>
             </header>
 
             <!-- Content Area -->
             <div class="content-wrapper">
-                <div class="hero-section" style="margin-bottom: 1rem; text-align: left;">
-                    <h1>Your <span class="gradient-text">History</span></h1>
-                    <p>Review past claims and analyses made by DeClaim AI.</p>
+                <div class="hero-section">
+                    <h1>Choose Your <span class="gradient-text">Premium</span> Plan</h1>
+                    <p>Unlock deep fact-checking over 10+ sources, logic flaw detection, and bias graphing.</p>
                 </div>
 
-                {% if history %}
-                    <div class="history-list">
-                        {% for item in history %}
-                        <div class="glass history-card">
-                            <div class="history-header">
-                                <span class="risk-badge risk-{{ item.risk|lower }}" style="margin-bottom: 0; padding: 0.3rem 0.8rem; font-size: 0.85rem;">{{ item.risk }} Risk</span>
-                                <span class="timestamp">{{ item.timestamp }}</span>
-                            </div>
-                            <div class="history-claim">"{{ item.claim }}"</div>
-                            <div class="history-reason"><strong>Reason:</strong> {{ item.reason }}</div>
-                            <div style="color: #93c5fd;"><strong>Rewrite:</strong> {{ item.rewrite }}</div>
-                        </div>
-                        {% endfor %}
+                <div class="pricing-grid">
+                    <!-- Day Plan -->
+                    <div class="pricing-card glass">
+                        <div class="duration">1 Day</div>
+                        <div class="price">$2</div>
+                        <ul>
+                            <li>Full Fact-Checking</li>
+                            <li>10+ Verified Sources</li>
+                            <li>No Search Limits</li>
+                        </ul>
+                        <button class="btn-primary w-100">Select Plan</button>
                     </div>
-                {% else %}
-                    <div class="glass empty-state">
-                        <p>You haven't analyzed any claims yet. Go to Analyze to get started!</p>
+
+                    <!-- Month Plan -->
+                    <div class="pricing-card glass popular">
+                        <div class="duration">1 Month</div>
+                        <div class="price">$10</div>
+                        <ul>
+                            <li>Full Fact-Checking</li>
+                            <li>10+ Verified Sources</li>
+                            <li>Logic Flaw Detection</li>
+                            <li>Priority Support</li>
+                        </ul>
+                        <button class="btn-primary w-100">Select Plan</button>
                     </div>
-                {% endif %}
+
+                    <!-- Year Plan -->
+                    <div class="pricing-card glass">
+                        <div class="duration">1 Year</div>
+                        <div class="price">$80</div>
+                        <ul>
+                            <li>All Monthly Features</li>
+                            <li>Unlimited Historical Data</li>
+                            <li>API Access</li>
+                            <li>2 Months Free ($40 savings)</li>
+                        </ul>
+                        <button class="btn-primary w-100">Select Plan</button>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
-
-    <!-- Background Orbs -->
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
 </body>
 </html>

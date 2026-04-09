@@ -1,21 +1,21 @@
-/* Premium Dark Mode Variables */
+/* Theme 1: Classic Light Editorial Variables */
 :root {
-    --bg-primary: #0a0a0f;
-    --bg-secondary: rgba(20, 20, 30, 0.6);
-    --bg-panel: rgba(25, 25, 40, 0.4);
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-panel: #ffffff;
     
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0b0;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
     
-    --accent-primary: #6d28d9;
-    --accent-secondary: #3b82f6;
-    --gradient-glow: linear-gradient(135deg, #6d28d9, #3b82f6);
+    --accent-primary: #b91c1c;
+    --accent-secondary: #991b1b;
+    --gradient-glow: #b91c1c;
     
-    --risk-low: #10b981;
-    --risk-medium: #f59e0b;
-    --risk-high: #ef4444;
+    --risk-low: #059669;
+    --risk-medium: #d97706;
+    --risk-high: #dc2626;
 
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border: #e2e8f0;
 }
 
 * {
@@ -29,38 +29,15 @@ body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
-    overflow: hidden;
-    position: relative;
+    overflow-x: hidden;
 }
 
-/* Background Animations */
-.bg-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(120px);
-    z-index: -1;
-    animation: float 20s infinite ease-in-out alternate;
-}
-.orb-1 {
-    width: 600px;
-    height: 600px;
-    background: rgba(109, 40, 217, 0.15);
-    top: -200px;
-    left: -200px;
-}
-.orb-2 {
-    width: 500px;
-    height: 500px;
-    background: rgba(59, 130, 246, 0.15);
-    bottom: -100px;
-    right: -200px;
-    animation-delay: -10s;
+h1, h2, h3, h4 {
+    font-family: 'Merriweather', 'Georgia', serif;
+    font-weight: 700;
 }
 
-@keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(50px, 50px) scale(1.1); }
-}
+/* Background anims removed for professional aesthetic */
 
 /* Layout */
 .layout {
@@ -72,7 +49,6 @@ body {
 .sidebar {
     width: 260px;
     background: var(--bg-secondary);
-    backdrop-filter: blur(20px);
     border-right: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
@@ -199,15 +175,15 @@ body {
 }
 
 .btn-primary {
-    background: var(--gradient-glow);
+    background: var(--accent-primary);
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
-    border-radius: 20px;
+    border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
 }
 .btn-primary:hover {
     transform: translateY(-2px);
@@ -242,14 +218,13 @@ body {
     font-size: 1.1rem;
 }
 
-/* Glass Card */
+/* Clean Card */
 .glass {
     background: var(--bg-panel);
-    backdrop-filter: blur(24px);
     border: 1px solid var(--glass-border);
-    border-radius: 24px;
+    border-radius: 12px;
     padding: 2rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .input-section {
@@ -276,11 +251,11 @@ textarea:focus {
 
 .btn-analyze {
     align-self: flex-end;
-    background: var(--text-primary);
-    color: var(--bg-primary);
+    background: var(--accent-primary);
+    color: #ffffff;
     border: none;
     padding: 0.8rem 2rem;
-    border-radius: 30px;
+    border-radius: 6px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -290,8 +265,7 @@ textarea:focus {
     transition: all 0.2s ease;
 }
 .btn-analyze:hover {
-    background: #e2e8f0;
-    transform: scale(1.02);
+    background: var(--accent-secondary);
 }
 .btn-analyze .arrow {
     transition: transform 0.2s ease;
@@ -384,11 +358,11 @@ textarea:focus {
 }
 
 .btn-premium {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: white;
-    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--glass-border);
     padding: 0.8rem 1.5rem;
-    border-radius: 30px;
+    border-radius: 6px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -396,11 +370,10 @@ textarea:focus {
     align-items: center;
     gap: 8px;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
 }
 .btn-premium:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+    color: var(--text-primary);
+    border-color: var(--text-primary);
 }
 
 .modal {
@@ -572,4 +545,87 @@ textarea:focus {
 }
 .login-footer a:hover {
     text-decoration: underline;
+}
+
+/* Pricing Page Styles */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.pricing-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(109, 40, 217, 0.4);
+}
+
+.pricing-card .duration {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.pricing-card .price {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+}
+
+.pricing-card.popular {
+    border: 2px solid var(--accent-primary);
+    position: relative;
+    transform: scale(1.05);
+}
+
+.pricing-card.popular:hover {
+    transform: scale(1.05) translateY(-5px);
+}
+
+.pricing-card.popular::before {
+    content: "Most Popular";
+    position: absolute;
+    top: -15px;
+    background: var(--accent-primary);
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.pricing-card ul {
+    list-style: none;
+    margin-bottom: 2rem;
+    text-align: left;
+    width: 100%;
+}
+
+.pricing-card ul li {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pricing-card ul li::before {
+    content: "✓";
+    color: var(--accent-primary);
+    font-weight: bold;
 }

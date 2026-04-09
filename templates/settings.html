@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - DeClaim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .settings-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 1rem;
+            max-width: 600px;
+        }
+        .settings-card {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .settings-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .settings-group:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .setting-info h3 {
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+        .setting-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--glass-border);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 3px;
+            background-color: var(--text-secondary);
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        input:checked + .slider:before {
+            transform: translateX(24px);
+            background-color: white;
+        }
+        
+        .settings-input {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            color: var(--text-primary);
+            outline: none;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+        .settings-input:focus {
+            border-color: var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="icon">📰</span>
+                <h2>DeClaim</h2>
+            </div>
+            <nav class="nav-links">
+                <a href="/"><span class="icon">🔍</span> Analyze</a>
+                <a href="/history"><span class="icon">📜</span> History</a>
+                <a href="/sources"><span class="icon">🗂️</span> Sources</a>
+                <a href="/premium"><span class="icon">💎</span> Premium</a>
+                <a href="/settings" class="active"><span class="icon">⚙️</span> Settings</a>
+                <a href="/logout"><span class="icon">🚪</span> Logout</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/profile" style="text-decoration: none; color: inherit; display: block; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">
+                <div class="user-profile" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <img src="https://ui-avatars.com/api/?name={{ user }}&background=0D8ABC&color=fff" alt="User" class="avatar">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 1rem;">{{ user }}</span>
+                            <span id="userBadge" style="font-size: 0.75rem; color: #f59e0b; font-weight: 800; text-transform: uppercase;">{{ user_badge }}</span>
+                        </div>
+                    </div>
+                    <div style="width: 100%; background: rgba(148, 163, 184, 0.2); border-radius: 4px; height: 6px; overflow: hidden; margin-bottom: 4px;">
+                        <div id="scoreProgress" style="width: {{ (skeptic_score % 100)|int }}%; background: var(--accent-primary); height: 100%; transition: width 0.5s ease;"></div>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); width: 100%; text-align: right;">
+                        Score: <strong id="userScore" style="color: var(--text-primary);">{{ skeptic_score }}</strong> XP
+                    </div>
+                </div>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Navbar -->
+            <header class="navbar">
+                <div class="search-bar">
+                    <span class="icon">⌕</span>
+                    <input type="text" placeholder="Search past claims...">
+                </div>
+                <div class="nav-actions">
+                    <button class="btn-icon">🔔</button>
+                    <a href="/" class="btn-primary" style="text-decoration: none;">New Analysis</a>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-wrapper">
+                <div class="hero-section" style="text-align: left; margin-bottom: 2rem;">
+                    <h1>Account <span class="gradient-text">Settings</span></h1>
+                    <p>Manage your preferences, account details, and notification settings.</p>
+                </div>
+
+                <div class="settings-container">
+                    <div class="settings-card glass">
+                        <div class="settings-group">
+                            <div class="setting-info">
+                                <h3>Username</h3>
+                                <p>Your display name across the platform.</p>
+                            </div>
+                            <input type="text" class="settings-input" value="{{ user }}">
+                        </div>
+                        
+                        <div class="settings-group">
+                            <div class="setting-info">
+                                <h3>Email Notifications</h3>
+                                <p>Receive weekly updates and new feature alerts.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="setting-info">
+                                <h3>Data Privacy</h3>
+                                <p>Allow AI to collect query metrics for model training.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" style="align-self: flex-start; padding: 0.8rem 2rem;">Save Changes</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

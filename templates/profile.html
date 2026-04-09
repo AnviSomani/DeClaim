@@ -3,52 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeClaim - History</title>
+    <title>Profile - DeClaim</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        .history-list {
+        .profile-hero {
             display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        .history-card {
-            padding: 1.5rem;
-            animation: slideUp 0.4s ease-out;
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-        .history-card:hover {
-            transform: translateY(-2px);
-        }
-        .history-header {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--glass-border);
+            gap: 2rem;
+            margin-bottom: 3rem;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
         }
-        .timestamp {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-primary);
         }
-        .history-claim {
-            font-size: 1.1rem;
-            font-style: italic;
-            margin-bottom: 1rem;
-            color: #d1d5db;
-        }
-        .history-reason {
-            color: var(--text-secondary);
+        .profile-hero-info h1 {
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
         }
-        .empty-state {
+        .profile-badge {
+            display: inline-block;
+            background: rgba(185, 28, 28, 0.1);
+            color: var(--accent-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .stat-card {
+            padding: 2rem;
             text-align: center;
-            padding: 3rem;
+            border-radius: 16px;
+        }
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-primary);
+        }
+        .stat-card p {
             color: var(--text-secondary);
-            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -57,12 +68,12 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <span class="icon">✨</span>
+                <span class="icon">📰</span>
                 <h2>DeClaim</h2>
             </div>
             <nav class="nav-links">
                 <a href="/"><span class="icon">🔍</span> Analyze</a>
-                <a href="/history" class="active"><span class="icon">📜</span> History</a>
+                <a href="/history"><span class="icon">📜</span> History</a>
                 <a href="/sources"><span class="icon">🗂️</span> Sources</a>
                 <a href="/premium"><span class="icon">💎</span> Premium</a>
                 <a href="/settings"><span class="icon">⚙️</span> Settings</a>
@@ -99,42 +110,37 @@
                 </div>
                 <div class="nav-actions">
                     <button class="btn-icon">🔔</button>
-                    <a href="/"><button class="btn-primary">New Analysis</button></a>
+                    <a href="/" class="btn-primary" style="text-decoration: none;">New Analysis</a>
                 </div>
             </header>
 
             <!-- Content Area -->
             <div class="content-wrapper">
-                <div class="hero-section" style="margin-bottom: 1rem; text-align: left;">
-                    <h1>Your <span class="gradient-text">History</span></h1>
-                    <p>Review past claims and analyses made by DeClaim AI.</p>
+                <div class="profile-hero">
+                    <img src="https://ui-avatars.com/api/?name={{ user }}&background=0D8ABC&color=fff&size=200" alt="Avatar" class="profile-avatar">
+                    <div class="profile-hero-info">
+                        <h1>{{ user }}</h1>
+                        <div class="profile-badge">{{ user_badge }}</div>
+                    </div>
                 </div>
 
-                {% if history %}
-                    <div class="history-list">
-                        {% for item in history %}
-                        <div class="glass history-card">
-                            <div class="history-header">
-                                <span class="risk-badge risk-{{ item.risk|lower }}" style="margin-bottom: 0; padding: 0.3rem 0.8rem; font-size: 0.85rem;">{{ item.risk }} Risk</span>
-                                <span class="timestamp">{{ item.timestamp }}</span>
-                            </div>
-                            <div class="history-claim">"{{ item.claim }}"</div>
-                            <div class="history-reason"><strong>Reason:</strong> {{ item.reason }}</div>
-                            <div style="color: #93c5fd;"><strong>Rewrite:</strong> {{ item.rewrite }}</div>
-                        </div>
-                        {% endfor %}
+                <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem;">Your Debunking Stats</h2>
+                <div class="stats-grid">
+                    <div class="stat-card glass">
+                        <h3>{{ skeptic_score }}</h3>
+                        <p>Total Skeptic XP</p>
                     </div>
-                {% else %}
-                    <div class="glass empty-state">
-                        <p>You haven't analyzed any claims yet. Go to Analyze to get started!</p>
+                    <div class="stat-card glass">
+                        <h3>{{ total_claims }}</h3>
+                        <p>Claims Verified</p>
                     </div>
-                {% endif %}
+                    <div class="stat-card glass">
+                        <h3>{{ (total_claims * 1.5)|int }}m</h3>
+                        <p>Misinformation Defeated</p>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
-
-    <!-- Background Orbs -->
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
 </body>
 </html>
