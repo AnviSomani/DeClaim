@@ -2,29 +2,29 @@ DeClaim – Breaking Claims into Logic
 
 “Understand before you believe.”
 
-🚀 Overview
+Overview
 DeClaim is an AI-powered fact-checking system that analyzes claims in real time.  
 Instead of just saying whether a claim is true or false, it explains the logic behind it.  
 The goal is to help users think critically before trusting or sharing information.
 
 ---
 
-✨ Features
+Features
 
-- 🔍 Real-time claim analysis using AI  
-- 📊 Multi-metric scoring:
+- Real-time claim analysis using AI  
+- Multi-metric scoring:
 - Political Bias  
 - Emotional Tone  
 - Clickbait Level  
 - Logical Fallacies  
-- 🧠 Logical breakdown of claims  
-- ✍️ Truthful rewrite of misleading claims  
-- 🎮 Gamification with **Skeptic Score** and levels  
-- 💾 Stores user history using database  
+- Logical breakdown of claims  
+- Truthful rewrite of misleading claims  
+- Gamification with **Skeptic Score** and levels  
+- Stores user history using database  
 
 ---
 
-⚙️ Tech Stack
+Tech Stack
 
 - Backend: Python (Flask)  
 - Frontend: HTML, CSS, JavaScript  
@@ -33,7 +33,7 @@ The goal is to help users think critically before trusting or sharing informatio
 
 ---
 
-🧠 How It Works
+How It Works
 
 1. User enters a claim  
 2. System preprocesses the text  
@@ -48,19 +48,19 @@ The goal is to help users think critically before trusting or sharing informatio
 
 ---
 
-🎯 Gamification
+Gamification
 
 Users earn points for every claim they analyze.
 
-- 🔍 Novice Sleuth  
-- 🛡️ Truth Seeker  
-- 👑 Master Debunker  
+- Novice Sleuth  
+- Truth Seeker  
+- Master Debunker  
 
 This encourages users to fact-check regularly.
 
 ---
 
-⚠️ Challenges
+Challenges
 
 - Limited real-time data (no live web verification)  
 - Accuracy depends on input clarity  
@@ -68,23 +68,23 @@ This encourages users to fact-check regularly.
 
 ---
 
-🔮 Future Scope
+Future Scope
 
-- 🌐 Add live web search integration  
-- 🧩 Browser extension for social media  
-- 📈 Better accuracy for technical domains  
-- ⚡ Improve scalability for more users  
+- Add live web search integration  
+- Browser extension for social media  
+- Better accuracy for technical domains  
+- Improve scalability for more users  
 
 ---
 
-💡 Motivation
+Motivation
 
 Misinformation spreads fast, and people often believe things without understanding them.  
 DeClaim aims to change that by helping users understand the logic behind information.
 
 ---
 
-## 📌 Author
+Author
 
 Anvi Somani
 BTech 2nd Year Student
